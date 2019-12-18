@@ -1,0 +1,22 @@
+{
+  "name": "hisui",
+  "version": "1.0.0",
+  "description": "Personal Discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeranSalcedo/Hisui.git"
+  },
+  "author": "JeranSalcedo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeranSalcedo/Hisui/issues"
+  },
+  "homepage": "https://github.com/JeranSalcedo/Hisui#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
