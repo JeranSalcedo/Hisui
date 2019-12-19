@@ -1,7 +1,7 @@
 const Q = require('q');
 
 class Role {
-	getDefaultRole(guildId){
+	getRole_type(guildId, type){
 		const def = Q.defer();
 		const query = `
 			SELECT
@@ -9,10 +9,10 @@ class Role {
 			FROM role
 			WHERE
 				server = ? AND
-				isDefault = ?
+				type = ?
 		`;
 
-		db.query(query, [guildId, 1], (err, data) => {
+		db.query(query, [guildId, type], (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
@@ -23,7 +23,7 @@ class Role {
 		return def.promise;
 	}
 
-	addDefaultRole(guildId, roleId){
+	addRole_type(guildId, roleId, type){
 		const def = Q.defer();
 		const query = `
 			INSERT INTO
@@ -33,7 +33,7 @@ class Role {
 			)
 		`;
 
-		db.query(query, [guildId, 1, 0, roleId], (err, data) => {
+		db.query(query, [guildId, type, 0, roleId], (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
@@ -44,7 +44,7 @@ class Role {
 		return def.promise;
 	}
 
-	updateDefaultRole(guildId, roleId){
+	updateRole_type(guildId, roleId, type){
 		const def = Q.defer();
 		const query = `
 			UPDATE
@@ -53,10 +53,10 @@ class Role {
 				role = ?
 			WHERE
 				server = ? AND
-				isDefault = ?
+				type = ?
 		`;
 
-		db.query(query, [roleId, guildId, 1], (err, data) => {
+		db.query(query, [roleId, guildId, type], (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {

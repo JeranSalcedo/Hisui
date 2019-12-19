@@ -28,15 +28,15 @@ class guildController {
 		return def.promise;
 	}
 
-	setDefaultRole(guildId, roleId){
+	setRole_type(guildId, roleId, type){
 		const def = Q.defer();
 
 		roleId = roleId.replace(/\D/g,'');
 
-		const checkRequest = roleModel.getDefaultRole(guildId);
+		const checkRequest = roleModel.getRole_type(guildId, type);
 		checkRequest.then(data => {
 			if(data.length == 0){
-				const addRequest = roleModel.addDefaultRole(guildId, roleId);
+				const addRequest = roleModel.addRole_type(guildId, roleId, type);
 				addRequest.then(() => {
 					def.resolve(true);
 				}, err => {
@@ -46,7 +46,7 @@ class guildController {
 				if(roleId === data[0].role){
 					def.resolve(false);
 				} else {
-					const updateRequest = roleModel.updateDefaultRole(guildId, roleId);
+					const updateRequest = roleModel.updateRole_type(guildId, roleId, type);
 					updateRequest.then(() => {
 						def.resolve(true);
 					}, err => {

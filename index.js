@@ -77,9 +77,29 @@ client.on('message', message => {
 						.then(console.log(`Sent message: ${message.content}`))
 						.catch(console.error);
 				} else {
-					guildController.setDefaultRole(message.guild.id, args[0]).then(changed => {
+					guildController.setRole_type(message.guild.id, args[0], 0).then(changed => {
 						message.channel
 							.send(changed? `Default role updated!` : `${args[0]} is already the default role!`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					}, err => {
+						throw err;
+					});
+				}
+
+				break;
+
+			case 'sbr':
+			case 'setbotrole':
+				if(args.length != 1){
+					message.channel
+						.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<role>*`)
+						.then(console.log(`Sent message: ${message.content}`))
+						.catch(console.error);
+				} else {
+					guildController.setRole_type(message.guild.id, args[0], 1).then(changed => {
+						message.channel
+							.send(changed? `Bot role updated!` : `${args[0]} is already the bot role!`)
 							.then(console.log(`Sent message: ${message.content}`))
 							.catch(console.error);
 					}, err => {
