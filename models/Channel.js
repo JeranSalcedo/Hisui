@@ -8,15 +8,15 @@ class Channel {
 				channel
 			FROM channel_preference
 			WHERE
-				server = ? AND
-				num = ?
+				server = '${id}' AND
+				num = ${num}
 		`;
 
-		db.query(query, [id, num], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
+				def.resolve(data.rows);
 			}
 		});
 
@@ -29,15 +29,15 @@ class Channel {
 			INSERT INTO
 				channel_preference
 			VALUES (
-				?, ?, ?
+				'${guildId}', '${channelId}', ${num}
 			)
 		`;
 
-		db.query(query, [guildId, channelId, num], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(data.insertId);
+				def.resolve();
 			}
 		});
 
@@ -50,17 +50,17 @@ class Channel {
 			UPDATE
 				channel_preference
 			SET 
-				channel = ?
+				channel = '${channelId}'
 			WHERE
-				server = ? AND
-				num = ?
+				server = '${guildId}' AND
+				num = ${num}
 		`;
 
-		db.query(query, [channelId, guildId, num], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(data.insertId);
+				def.resolve();
 			}
 		});
 

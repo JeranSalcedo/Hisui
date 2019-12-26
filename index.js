@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const mysql = require('mysql');
+const { Client } = require('pg');
 const auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
@@ -8,11 +8,9 @@ const ChannelController = require('./controllers/channelController');
 const guildController = new GuildController();
 const channelController = new ChannelController();
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'maids'
+const connection = new Client({
+	connectionString: auth.db,
+	ssl: true
 });
 
 connection.connect(err => {
@@ -42,14 +40,12 @@ client.on('ready', () => {
 client.on('message', message => {
 	if(message.channel.type === 'dm'){
 		if(!message.author.bot && message.content.startsWith('!h ')){
-			elements = message.content.split(/\s+/).slice(1).map(element => (
-				element.toLowerCase()
-			));
+			elements = message.content.split(/\s+/).slice(1);
 
 			cmd = elements[0];
 			args = elements.slice(1);
 
-			switch(cmd){
+			switch(cmd.toLowerCase()){
 				case 'sm':
 				case 'sendmessage':
 					if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
@@ -71,7 +67,7 @@ client.on('message', message => {
 			}
 		}
 	} else {
-		if(!message.author.bot && message.author.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
+		if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
 			elements = message.content.split(/\s+/).slice(1).map(element => (
 				element.toLowerCase()
 			));

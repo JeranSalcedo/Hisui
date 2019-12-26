@@ -8,15 +8,15 @@ class Role {
 				role
 			FROM role
 			WHERE
-				server = ? AND
-				type = ?
+				server = '${guildId}' AND
+				type = ${type}
 		`;
 
-		db.query(query, [guildId, type], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
+				def.resolve(data.rows);
 			}
 		});
 
@@ -29,15 +29,15 @@ class Role {
 			INSERT INTO
 				role
 			VALUES (
-				?, ?, ?, ?
+				'${guildId}', ${type}, 0, '${roleId}'
 			)
 		`;
 
-		db.query(query, [guildId, type, 0, roleId], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(data.insertId);
+				def.resolve();
 			}
 		});
 
@@ -50,17 +50,17 @@ class Role {
 			UPDATE
 				role
 			SET
-				role = ?
+				role = '${roleId}'
 			WHERE
-				server = ? AND
-				type = ?
+				server = '${guildId}' AND
+				type = ${type}
 		`;
 
-		db.query(query, [roleId, guildId, type], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(data.insertId);
+				def.resolve();
 			}
 		});
 
