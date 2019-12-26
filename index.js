@@ -47,7 +47,7 @@ client.on('ready', () => {
 client.on('message', message => {
 	if(message.channel.type === 'dm'){
 		if(!message.author.bot && message.content.startsWith('!h ')){
-			elements = message.content.split(/\s+/).slice(1);
+			elements = message.content.split(/ +/).slice(1);
 
 			cmd = elements[0];
 			args = elements.slice(1);
@@ -75,7 +75,7 @@ client.on('message', message => {
 		}
 	} else {
 		if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
-			elements = message.content.split(/\s+/).slice(1).map(element => (
+			elements = message.content.split(/ +/).slice(1).map(element => (
 				element.toLowerCase()
 			));
 
@@ -160,7 +160,9 @@ client.on('message', message => {
 
 						if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
 							message.guild.channels.get(channels[message.guild.id][0])
-								.send(`Message sent to ${message.guild.channels.get(args[0]).name}`)
+								.send(`Message sent to ${message.guild.channels.find(channel => (
+									channel.id == args[0].replace(/\D/g,'')
+								)).name}`)
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						}
