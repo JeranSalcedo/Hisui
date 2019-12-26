@@ -57,7 +57,7 @@ client.on('message', message => {
 				case 'sendmessage':
 					if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
 						message.channel
-							.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
+							.send(`Command format is:\n\t!h ${cmd} *<server> <channel> <message>*`)
 							.then(console.log(`Sent message: ${message.content}`))
 							.catch(console.error);
 					} else {
@@ -145,39 +145,26 @@ client.on('message', message => {
 
 				case 'sm':
 				case 'sendmessage':
-					console.log(channels);
-					// client.fetchUser('656810218272849920').then(kohaku => {
-					// 	if(kohaku.presence.status === 'online'){
-					// 		kohaku.createDM().then(channel => {
-					// 			channel
-					// 				.send(`!k updateChannels ${message.guild.id}`)
-					// 				.then(console.log(`Sent message: ${message.content}`))
-					// 				.catch(console.error);
-					// 		});
-					// 		// kohaku
-					// 	}
-					// }, err => {
-					// 	throw err;
-					// });
+					if(args.length < 2 || args[0].replace(/\D/g,'').length < 18){
+						message.channel
+							.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel> <message>*`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					} else {
+						message.guild.channels.find(channel => (
+							channel.id == args[0].replace(/\D/g,'')
+						))
+						.send(args.slice(1).join(' '))
+						.then(console.log(`Sent message: ${message.content}`))
+						.catch(console.error);
 
-					// if(args.length < 2 || args[0].replace(/\D/g,'').length < 18){
-					// 	message.channel
-					// 		.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel> <message>*`)
-					// 		.then(console.log(`Sent message: ${message.content}`))
-					// 		.catch(console.error);
-					// } else {
-					// 	message.guild.channels.get(args[0])
-					// 		.send(args.slice(1).join(' '))
-					// 		.then(console.log(`Sent message: ${message.content}`))
-					// 		.catch(console.error);
-
-					// 	if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
-					// 		message.guild.channels.get(channels[message.guild.id][0])
-					// 			.send(`Message sent to ${message.guild.channels.get(args[0]).name}`)
-					// 			.then(console.log(`Sent message: ${message.content}`))
-					// 			.catch(console.error);
-					// 	}
-					// }
+						if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
+							message.guild.channels.get(channels[message.guild.id][0])
+								.send(`Message sent to ${message.guild.channels.get(args[0]).name}`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						}
+					}
 			}
 		}
 	}
