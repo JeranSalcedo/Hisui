@@ -74,6 +74,127 @@ client.on('message', message => {
 			}
 		}
 	} else {
+		if(
+			Math.floor(Math.random() * 10 === 1) &&
+			(
+				message.author.id === '273579032098897922' ||
+				message.author.id === '243749854088527873' ||
+				message.author.id === '574261866654597120'
+			)
+		){
+			switch(Math.floor(Math.random() * 18)){
+				case 0:
+					message.react(message.guild.emojis.get('655873700926849036'))
+						.then(console.log(`Reacted with 655873700926849036`))
+						.catch(console.error);
+					break;
+
+				case 1:
+					message.react(message.guild.emojis.get('655873724205105182'))
+						.then(console.log(`Reacted with 655873724205105182`))
+						.catch(console.error);
+					break;
+
+				case 2:
+					message.react(message.guild.emojis.get('655873769663103010'))
+						.then(console.log(`Reacted with 655873769663103010`))
+						.catch(console.error);
+					break;
+
+				case 3:
+					message.react(message.guild.emojis.get('655873817255608321'))
+						.then(console.log(`Reacted with 655873817255608321`))
+						.catch(console.error);
+					break;
+
+				case 4:
+					message.react(message.guild.emojis.get('655873837245661239'))
+						.then(console.log(`Reacted with 655873837245661239`))
+						.catch(console.error);
+					break;
+
+				case 5:
+					message.react(message.guild.emojis.get('655873855365185547'))
+						.then(console.log(`Reacted with 655873855365185547`))
+						.catch(console.error);
+					break;
+
+				case 6:
+					message.react(message.guild.emojis.get('655873877884534845'))
+						.then(console.log(`Reacted with 655873877884534845`))
+						.catch(console.error);
+					break;
+
+				case 7:
+					message.react(message.guild.emojis.get('655873914689552404'))
+						.then(console.log(`Reacted with 655873914689552404`))
+						.catch(console.error);
+					break;
+
+				case 8:
+					message.react(message.guild.emojis.get('655873974991061012'))
+						.then(console.log(`Reacted with 655873974991061012`))
+						.catch(console.error);
+					break;
+
+				case 9:
+					message.react(message.guild.emojis.get('655874000152690699'))
+						.then(console.log(`Reacted with 655874000152690699`))
+						.catch(console.error);
+					break;
+
+				case 10:
+					message.react(message.guild.emojis.get('655874019995942923'))
+						.then(console.log(`Reacted with 655874019995942923`))
+						.catch(console.error);
+					break;
+
+				case 11:
+					message.react(message.guild.emojis.get('655874185251389460'))
+						.then(console.log(`Reacted with 655874185251389460`))
+						.catch(console.error);
+					break;
+
+				case 12:
+					message.react(message.guild.emojis.get('655874248966930452'))
+						.then(console.log(`Reacted with 655874248966930452`))
+						.catch(console.error);
+					break;
+
+				case 13:
+					message.react(message.guild.emojis.get('655874298388676645'))
+						.then(console.log(`Reacted with 655874298388676645`))
+						.catch(console.error);
+					break;
+
+				case 14:
+					message.react(message.guild.emojis.get('656147573094088734'))
+						.then(console.log(`Reacted with 656147573094088734`))
+						.catch(console.error);
+					break;
+
+				case 15:
+					message.react(message.guild.emojis.get('658713308559441961'))
+						.then(console.log(`Reacted with 658713308559441961`))
+						.catch(console.error);
+					break;
+
+				case 16:
+					message.react(message.guild.emojis.get('658713534351409162'))
+						.then(console.log(`Reacted with 658713534351409162`))
+						.catch(console.error);
+					break;
+
+				case 17:
+					message.react(message.guild.emojis.get('656648297305473065'))
+						.then(async react => {
+							await message.react(message.guild.emojis.get('656648325839192094'));
+							await message.react(message.guild.emojis.get('656648346013794314'));
+						})
+						.catch(console.error);
+					break;
+			}
+		}
 		if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
 			elements = message.content.split(/ +/).slice(1).map(element => (
 				element.toLowerCase()
@@ -96,6 +217,12 @@ client.on('message', message => {
 								.send(`Channel preferences updated!`)
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
+
+							if(channels[message.guild.id] === undefined){
+								channels[message.guild.id] = {
+									[args[1]]: args[0].replace(/\D/g,'')
+								};
+							}
 						}, err => {
 							throw err;
 						});
