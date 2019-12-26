@@ -33,6 +33,22 @@ class channelController {
 
 		return def.promise;
 	}
+	
+	getChannels(guildId){
+		const def = Q.defer();
+
+		const request = channelModel.getChannels(guildId);
+		request.then(data => {
+			def.resolve(data.reduce((obj, item) => (
+				obj[item.num] = item.channel,
+				obj
+			), {}));
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
 }
 
 module.exports = channelController;
