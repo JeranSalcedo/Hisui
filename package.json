@@ -4,8 +4,8 @@
   "description": "Personal Discord bot",
   "main": "index.js",
   "scripts": {
-    "start": "node bot",
-    "dev": "nodemon bot"
+    "start": "node index",
+    "dev": "nodemon index"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,8 @@
     "mysql": "^2.17.1",
     "pg": "^7.15.1",
     "q": "^1.5.1"
+  },
+  "engines": {
+    "node": "11.13.0"
   }
 }

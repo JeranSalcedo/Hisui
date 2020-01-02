@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const { Client } = require('pg');
-const auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -9,7 +8,7 @@ const guildController = new GuildController();
 const channelController = new ChannelController();
 
 const connection = new Client({
-	connectionString: auth.db,
+	connectionString: process.env.DATABASE_URL,
 	ssl: true
 });
 
@@ -387,4 +386,4 @@ watchRoleReact = (guild, message, roleId) => {
 	}).catch(console.error);
 }
 
-client.login(auth.token);
+client.login(process.env.BOT_TOKEN);
