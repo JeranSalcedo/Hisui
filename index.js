@@ -65,7 +65,7 @@ client.on('message', message => {
 	if(message.channel.type === 'dm'){
 		console.log(message.content);
 		console.log(message.author.id);
-		if(message.content === '!slam <@254289067875893259>' && message.author.id === '254289067875893259'){
+		if(message.content === '!slam <@!254289067875893259>' && message.author.id === '254289067875893259'){
 			message.channel
 				.send('!slam <@273579032098897922>')
 				.then(console.log(`Sent message: ${message.content}`))
@@ -230,7 +230,7 @@ client.on('message', message => {
 					.catch(console.error);
 		}*/
 
-		if(message.content === '!slam <@254289067875893259>' && message.author.id === '273579032098897922'){
+		if(message.content === '!slam <@!254289067875893259>' && message.author.id === '273579032098897922'){
 			message.channel
 				.send('!slam <@273579032098897922>')
 				.then(console.log(`Sent message: ${message.content}`))
