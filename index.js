@@ -63,6 +63,8 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	if(message.channel.type === 'dm'){
+		console.log(message.content);
+		console.log(message.author.id);
 		if(message.content === '!slam <@254289067875893259>' && message.author.id === '254289067875893259'){
 			message.channel
 				.send('!slam <@273579032098897922>')
