@@ -63,6 +63,12 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	if(message.channel.type === 'dm'){
+		if(message.content === '!slam <@254289067875893259>' && message.author.id === '254289067875893259'){
+			message.channel
+				.send('!slam <@273579032098897922>')
+				.then(console.log(`Sent message: ${message.content}`))
+		}
+
 		if(!message.author.bot && message.content.startsWith('!h ')){
 			elements = message.content.split(/ +/).slice(1);
 
@@ -221,6 +227,12 @@ client.on('message', message => {
 					.then(console.log(`Reacted with 660708929218674708`))
 					.catch(console.error);
 		}*/
+
+		if(message.content === '!slam <@254289067875893259>' && message.author.id === '273579032098897922'){
+			message.channel
+				.send('!slam <@273579032098897922>')
+				.then(console.log(`Sent message: ${message.content}`))
+		}
 
 		if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
 			elements = message.content.split(/ +/).slice(1);
