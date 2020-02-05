@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const { Client } = require('pg');
 const Jimp = require('jimp');
 const fs = require('fs');
-const Auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -11,7 +10,7 @@ const guildController = new GuildController();
 const channelController = new ChannelController();
 
 const connection = new Client({
-	connectionString: process.env.DATABASE_URL || Auth.db,
+	connectionString: process.env.DATABASE_URL,
 	ssl: true
 });
 
@@ -534,4 +533,4 @@ executeAction = (channel, args, user) => {
 	}
 }
 
-client.login(process.env.BOT_TOKEN || Auth.token);
+client.login(process.env.BOT_TOKEN);
