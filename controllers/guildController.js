@@ -1,9 +1,11 @@
 const Q = require('q');
 const Prefix = require('../models/Prefix');
 const Role = require('../models/Role');
+const Command = require('../models/Command');
 
 const prefixModel = new Prefix();
 const roleModel = new Role();
+const commandModel = new Command();
 
 class guildController {
 	getPrefix(guildId){
@@ -54,6 +56,58 @@ class guildController {
 					});
 				}
 			}
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	addAction(guildId, command, source, angle, x, y, s){
+		const def = Q.defer();
+
+		const request = commandModel.addAction(guildId, command, source, angle, x, y, s);
+		request.then(data => {
+			def.resolve();
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	updateAction(guildId, command, angle, x, y, s){
+		const def = Q.defer();
+
+		const request = commandModel.updateAction(guildId, command, angle, x, y, s);
+		request.then(data => {
+			def.resolve({guildId, command, angle, x, y, s});
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	getAction(guildId, command){
+		const def = Q.defer();
+
+		const request = commandModel.getAction(guildId, command);
+		request.then(data => {
+			def.resolve(data[0]);
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	getActions(guildId){
+		const def = Q.defer();
+
+		const request = commandModel.getActions(guildId);
+		request.then(data => {
+			def.resolve(data);
 		}, err => {
 			def.reject(err);
 		});
