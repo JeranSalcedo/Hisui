@@ -227,7 +227,7 @@ client.on('message', message => {
 
 		if((message.content === '~slam <@!254289067875893259>' && Math.floor(Math.random() * 10) < 2) || message.content === '~slam <@!656810218272849920>'){
 			message.channel
-				.send('~slam <@273579032098897922>')
+				.send(`~slam <@${message.author.id}>`)
 				.then(console.log(`Sent message: ${message.content}`))
 		}
 
