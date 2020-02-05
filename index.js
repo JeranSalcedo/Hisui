@@ -225,7 +225,7 @@ client.on('message', message => {
 					.catch(console.error);
 		}*/
 
-		if((message.content === '~slam <@!254289067875893259>' || message.content === '~slam <@!656810218272849920>') && message.author.id === '273579032098897922'){
+		if((message.content === '~slam <@!254289067875893259>' && Math.floor(Math.random() * 10) < 2) || message.content === '~slam <@!656810218272849920>'){
 			message.channel
 				.send('~slam <@273579032098897922>')
 				.then(console.log(`Sent message: ${message.content}`))
