@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const { Client } = require('pg');
 const Jimp = require('jimp');
 const fs = require('fs');
-const Auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -11,7 +10,7 @@ const guildController = new GuildController();
 const channelController = new ChannelController();
 
 const connection = new Client({
-	connectionString: process.env.DATABASE_URL || Auth.db,
+	connectionString: process.env.DATABASE_URL,
 	ssl: true
 });
 
@@ -226,12 +225,6 @@ client.on('message', message => {
 					.catch(console.error);
 		}*/
 
-		if((message.content === '~slam <@!254289067875893259>' && Math.floor(Math.random() * 10) < 2) || message.content === '~slam <@!656810218272849920>'){
-			message.channel
-				.send(`~slam <@${message.author.id}>`)
-				.then(console.log(`Sent message: ${message.content}`))
-		}
-
 		if(message.content.startsWith('~')){
 			if(commands[message.guild.id] === undefined){
 				commands[message.guild.id] = {};
@@ -242,15 +235,22 @@ client.on('message', message => {
 			cmd = elements[0];
 			args = elements.slice(1);
 
-			if(message.guild.id in commands && cmd in commands[message.guild.id]){
-				executeAction(message.channel, commands[message.guild.id][cmd], args[0]);
-			} else {
-				guildController.getAction(message.guild.id, cmd).then(data => {
-					commands[message.guild.id][cmd] = data;
-					executeAction(message.channel, data, args[0]);
-				}, err => {
-					throw err;
-				});
+			var target = args.length > 0? args[0].replace(/\D/g,'') : '';
+			if(cmd === 'slam' && (target === '656810218272849920' || (message.author.id !== '656810218272849920' && target === '254289067875893259' && Math.floor(Math.random() * 10) < 2))){
+				target = message.author.id;
+			}
+
+			if(target !== '655865403876311101'){
+				if(message.guild.id in commands && cmd in commands[message.guild.id]){
+					executeAction(message.channel, commands[message.guild.id][cmd], target);
+				} else {
+					guildController.getAction(message.guild.id, cmd).then(data => {
+						commands[message.guild.id][cmd] = data;
+						executeAction(message.channel, data, target);
+					}, err => {
+						throw err;
+					});
+				}
 			}
 		}
 
@@ -517,7 +517,7 @@ watchRoleReact = (guild, message, roleId) => {
 }
 
 executeAction = (channel, args, user) => {
-	if(user !== undefined){
+	if(user !== ''){
 		Jimp.read(args.source).then(image => {
 			client.fetchUser(user.replace(/\D/g,'')).then(user => {
 				const userImage = user.avatarURL.substring(0, user.avatarURL.indexOf('?'));
@@ -549,4 +549,4 @@ executeAction = (channel, args, user) => {
 	}
 }
 
-client.login(process.env.BOT_TOKEN || Auth.token);
+client.login(process.env.BOT_TOKEN);
