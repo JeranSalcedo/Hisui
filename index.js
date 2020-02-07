@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const { Client } = require('pg');
 const Jimp = require('jimp');
 const fs = require('fs');
+const Auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -10,7 +11,7 @@ const guildController = new GuildController();
 const channelController = new ChannelController();
 
 const connection = new Client({
-	connectionString: process.env.DATABASE_URL,
+	connectionString: process.env.DATABASE_URL || Auth.db,
 	ssl: true
 });
 
@@ -242,10 +243,8 @@ client.on('message', message => {
 			args = elements.slice(1);
 
 			if(message.guild.id in commands && cmd in commands[message.guild.id]){
-				console.log("n");
 				executeAction(message.channel, commands[message.guild.id][cmd], args[0]);
 			} else {
-				console.log("y");
 				guildController.getAction(message.guild.id, cmd).then(data => {
 					commands[message.guild.id][cmd] = data;
 					executeAction(message.channel, data, args[0]);
@@ -404,7 +403,7 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							const url = message.attachments.first().proxyURL;
+							const url = message.attachments.first().url;
 							guildController.addAction(message.guild.id, args[0], url, args[1] === undefined? 0 : args[1], args[2] === undefined? 0 : args[2], args[3] === undefined? 0 : args[3], args[4] === undefined? 1 : args[4]).then(() => {
 								message.channel
 									.send(`Action command successfully added!`)
@@ -456,6 +455,23 @@ client.on('message', message => {
 							}, err => {
 								throw err;
 							});
+
+						break;
+
+					case 'cr':
+					case 'clearroles':
+						message.guild.channels.find(channel => (
+							channel.id === channels[message.guild.id][2]
+						)).fetchMessages().then(messages => {
+							messages.forEach(msg => {
+								msg.delete();
+							});
+
+							message.channel
+								.send(`All roles cleared!`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						});
 				}
 			}
 
@@ -533,4 +549,4 @@ executeAction = (channel, args, user) => {
 	}
 }
 
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN || Auth.token);
