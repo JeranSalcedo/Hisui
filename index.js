@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const { Client } = require('pg');
 const Jimp = require('jimp');
 const fs = require('fs');
+// const Auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -425,6 +426,7 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							guildController.updateAction(message.guild.id, args[0], args[1], args[2], args[3], args[4]).then(data => {
+								//error before or during this. Debug
 								if(data.guildId in commands && data.command in commands[data.guildId]){
 									delete commands[data.guildId].data.command;
 								}
@@ -472,6 +474,29 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						});
+
+						break;
+
+					case 'ir':
+					case 'inrole':
+						// if(args.length < 5){
+						// 	message.channel
+						// 		.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<command name> <angle> <x> <y> <size>*`)
+						// 		.then(console.log(`Sent message: ${message.content}`))
+						// 		.catch(console.error);
+						// } else {
+						// 	guildController.updateAction(message.guild.id, args[0], args[1], args[2], args[3], args[4]).then(data => {
+						// 		//error before or during this. Debug
+						// 		if(data.guildId in commands && data.command in commands[data.guildId]){
+						// 			delete commands[data.guildId].data.command;
+						// 		}
+						// 		message.channel
+						// 			.send(`Action command successfully updated!`)
+						// 			.then(console.log(`Sent message: ${message.content}`))
+						// 			.catch(console.error);
+						// 	}, err => {
+						// 		throw err;
+						// 	});
 				}
 			}
 
@@ -487,6 +512,37 @@ client.on('message', message => {
 			}
 		}
 	}
+});
+
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+	newMember.guild.fetchAuditLogs().then(audit => {
+		entry = audit.entries.first();
+
+		if(
+			entry.action === 'MEMBER_ROLE_UPDATE' &&
+			entry.executor.id !== '254289067875893259' &&
+			entry.executor.id !== '655865403876311101' &&
+			entry.target.id === '254289067875893259'
+		){
+			newMember.guild.channels.find(channel => (
+				channel.id === channels[newMember.guild.id][0]
+			))
+			.send(`~slam <@${entry.executor.id}>`)
+			.then(console.log(`Slammed for insubordination`))
+			.catch(console.error);
+
+			switch(entry.changes[0].key){
+				case '$add':
+					newMember.removeRole(entry.changes[0].new[0].id);
+					newMember.guild.fetchMember(entry.executor).then(member => {
+						member.addRole(entry.changes[0].new[0].id);
+					}).catch(console.error);
+					break;
+				case '$remove':
+					newMember.addRole(entry.changes[0].new[0].id);
+			}
+		}
+	}).catch(console.error);
 });
 
 watchRoleReact = (guild, message, roleId) => {
