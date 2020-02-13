@@ -426,6 +426,7 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							guildController.updateAction(message.guild.id, args[0], args[1], args[2], args[3], args[4]).then(data => {
+								// console.log('l');
 								//error before or during this. Debug
 								if(data.guildId in commands && data.command in commands[data.guildId]){
 									delete commands[data.guildId].data.command;
@@ -576,7 +577,7 @@ executeAction = (channel, args, user) => {
 	if(user !== ''){
 		Jimp.read(args.source).then(image => {
 			client.fetchUser(user.replace(/\D/g,'')).then(user => {
-				const userImage = user.avatarURL.substring(0, user.avatarURL.indexOf('?'));
+				const userImage = user.avatarURL.substring(0, user.avatarURL.indexOf('?') == -1? user.avatarURL.length : user.avatarURL.indexOf('?'));
 
 				Jimp.read(userImage).then(image2 => {
 					image2.resize(args.size * image2.bitmap.width, args.size * image2.bitmap.height)
@@ -590,7 +591,7 @@ executeAction = (channel, args, user) => {
 							.then(console.log(`Sent action`))
 							.catch(console.error);
 					})
-				})
+				}).catch(console.error);
 			});
 		}).catch(err => {
 			throw err;
